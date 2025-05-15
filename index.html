@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pizza OrderBot with AI</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
+    input, button { margin-top: 10px; padding: 10px; width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>🍕 Pizza OrderBot with AI</h1>
+  <div id="chat"></div>
+  <input type="text" id="userInput" placeholder="Type your message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <!-- Load transformers.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers/dist/transformers.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
