@@ -2,27 +2,77 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pizza OrderBot</title>
+  <title>Pizza Order Chatbot</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
-    #chat { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: auto; }
-    .user { color: blue; margin: 5px 0; }
-    .bot { color: green; margin: 5px 0; }
-    #inputArea { margin-top: 10px; }
-    #inputArea input { width: 80%; padding: 8px; }
-    #inputArea button { padding: 8px 12px; }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; }
+    .user { color: blue; }
+    .bot { color: green; }
+    input, button { padding: 10px; margin-top: 10px; width: 300px; }
   </style>
 </head>
 <body>
-  <h1>Pizza OrderBot</h1>
+  <h2>Pizza Order Chatbot</h2>
   <div id="chat"></div>
+  <input type="text" id="userInput" placeholder="Type your message..." />
+  <button id="sendBtn">Send</button>
 
-  <div id="inputArea">
-    <input id="userInput" type="text" placeholder="Type your message..." />
-    <button id="sendBtn">Send</button>
-  </div>
+  <!-- Load transformers UMD bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@1.1.1/dist/transformers.min.js"></script>
+  <script>
+    const chatDiv = document.getElementById('chat');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
 
-  <script type="module" src="script.js"></script>
+    let nlp;
+
+    // Display message helper
+    function addMessage(text, sender) {
+      const p = document.createElement('p');
+      p.textContent = text;
+      p.className = sender;
+      chatDiv.appendChild(p);
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    }
+
+    async function initialize() {
+      addMessage('Loading model, please wait...', 'bot');
+      // Initialize conversational pipeline
+      nlp = await transformers.pipeline('conversational');
+      addMessage('Hello! I am your pizza order bot. How can I help you?', 'bot');
+    }
+
+    async function sendMessage() {
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      addMessage('You: ' + message, 'user');
+      userInput.value = '';
+      userInput.disabled = true;
+      sendBtn.disabled = true;
+
+      try {
+        const response = await nlp(message);
+        // response is an array with a Conversation object
+        // extract the generated reply text
+        const botReply = response[0].generated_text || response[0].text || 'Sorry, I did not understand that.';
+        addMessage('Bot: ' + botReply, 'bot');
+      } catch (e) {
+        addMessage('Bot: Oops! Something went wrong.', 'bot');
+        console.error(e);
+      }
+
+      userInput.disabled = false;
+      sendBtn.disabled = false;
+      userInput.focus();
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    initialize();
+  </script>
 </body>
 </html>
