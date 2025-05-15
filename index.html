@@ -1,21 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Pizza OrderBot with AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pizza OrderBot</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-    #chat { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
-    input, button { margin-top: 10px; padding: 10px; width: 100%; }
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: auto; }
+    .user { color: blue; margin: 5px 0; }
+    .bot { color: green; margin: 5px 0; }
+    #inputArea { margin-top: 10px; }
+    #inputArea input { width: 80%; padding: 8px; }
+    #inputArea button { padding: 8px 12px; }
   </style>
 </head>
 <body>
-  <h1>🍕 Pizza OrderBot with AI</h1>
+  <h1>Pizza OrderBot</h1>
   <div id="chat"></div>
-  <input type="text" id="userInput" placeholder="Type your message..." />
-  <button onclick="sendMessage()">Send</button>
 
-  <!-- Load transformers.js -->
-  <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers/dist/transformers.min.js"></script>
+  <div id="inputArea">
+    <input id="userInput" type="text" placeholder="Type your message..." />
+    <button id="sendBtn">Send</button>
+  </div>
+
   <script type="module" src="script.js"></script>
 </body>
 </html>
